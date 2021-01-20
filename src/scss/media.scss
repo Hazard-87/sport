@@ -1,0 +1,162 @@
+@media only screen and (max-width: 320px) {
+  .container {
+    max-width: 500px;
+  }
+
+  .header {
+    max-width: 320px;
+
+    &__menu {
+      display: block;
+      margin: 12px 22px;
+    }
+
+    &__title {
+      display: none;
+    }
+
+    &__login-btn {
+      margin: 15px;
+    }
+  }
+
+  .menu-popup {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    width: 320px;
+    height: 600px;
+    border-radius: 3px;
+    background-color: #353942;
+    z-index: 100;
+
+    &__block {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #fff;
+    }
+
+    &.hidden {
+      display: none;
+    }
+
+    &__title {
+      height: 23px;
+      display: block;
+      padding: 12px 20px;
+      width: 100%;
+      color: #fff;
+    }
+
+    &__close {
+      margin: 17px;
+    }
+  }
+  .menu-popup-lists {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  .menu-list {
+    width: 100%;
+    padding: 15px;
+
+    &__item {
+      margin-bottom: 14px;
+    }
+    &__title {
+      color: #fff;
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 400;
+    }
+  }
+
+  .categories {
+    display: none;
+    &__list {
+      display: flex;
+      padding: 0;
+    }
+
+    &__list-item {
+      margin-right: 69px;
+      list-style-type: none;
+    }
+
+    &__list-link {
+      text-decoration: none;
+    }
+  }
+
+  .navbar {
+    display: none;
+  }
+
+  .content-wrapper {
+    max-width: 320px;
+
+    margin: 10px 0;
+  }
+
+  .content-top {
+    max-width: 320px;
+    &__link {
+      font-size: 12px;
+      padding: 14px 12px;
+    }
+    &__date-img {
+      margin: 14px;
+    }
+
+    &__date-text {
+      display: none;
+    }
+  }
+
+  .content {
+    max-width: 320px;
+  }
+
+  .block-top {
+    max-width: 320px;
+  }
+
+  .block-footer {
+    max-width: 320px;
+
+    &__time {
+      font-size: 12px;
+    }
+
+    &__commands {
+      max-width: 250px;
+      padding-right: 0;
+      font-size: 12px;
+    }
+
+    &__score {
+      width: 45px;
+      color: #1e99c7;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+
+    &__favorites {
+      padding: 3px;
+      border-right: none;
+      margin-right: 5px;
+    }
+
+    &__status {
+      display: none;
+    }
+
+    &__detail {
+      display: none;
+    }
+  }
+}

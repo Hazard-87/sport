@@ -1,327 +1,85 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Route, Link } from 'react-router-dom';
+import { fetchItems } from './redux/actions/index';
 
-import toggleSvg from './assets/img/toggle.svg';
-import closeSvg from './assets/img/close.svg';
-import starSvg from './assets/img/star.svg';
-import starSvg2 from './assets/img/star2.svg';
-import flagSvg from './assets/img/flag.svg';
-import searchSvg from './assets/img/search.svg';
-import dateSvg from './assets/img/date.svg';
+import Today from './components/matches/Today';
+import Future from './components/matches/Future';
+import AllMatch from './components/matches/AllMatch';
+import Menu from './components/Menu';
+import Header from './components/Header';
+import Navbar from './components/Navbar';
+import ContentHeader from './components/ContentHeader';
 
 function App() {
+  const dispatch = useDispatch();
+  const state = useSelector((data) => data.items);
+  const league = useSelector((data) => data.leagues);
+  const country = useSelector((data) => data.country);
+
+  const [active, setActive] = React.useState(1);
+  const [visible, setVisible] = React.useState(null);
+  const [visibleMenu, setVisibleMenu] = React.useState(false);
+
+  const arr = [];
+  const items = league.map((item) => item.items);
+  items.forEach(function (item) {
+    arr.push(...item);
+  });
+
+  const date = new Date();
+  const day = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+  const g = [date.getUTCDate()];
+
+  const today = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0]);
+  const future = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0] + 1);
+
+  React.useEffect(async () => {
+    dispatch(fetchItems());
+  }, []);
+
+  const onSelectItem = (item) => {
+    setActive(item);
+  };
+
+  const onVisible = (index) => {
+    if (index === visible) {
+      setVisible(null);
+    } else {
+      setVisible(index);
+    }
+  };
+
+  const onVisibleMenu = () => {
+    setVisibleMenu(!visibleMenu);
+  };
+
   return (
     <div className="app-wrapper">
       <div className="container">
-        <header className="header">
-          <div className="header__title">РАСПИСАНИЕ МАТЧЕЙ</div>
-          <div className="categories">
-            <ul className="categories__list">
-              <li className="categories__list-item">
-                <a className="categories__list-link active" href="#">
-                  Все
-                </a>
-              </li>
-              <li className="categories__list-item">
-                <a className="categories__list-link" href="#">
-                  Live
-                </a>
-              </li>
-              <li className="categories__list-item">
-                <a className="categories__list-link" href="#">
-                  Результаты
-                </a>
-              </li>
-              <li className="categories__list-item">
-                <a className="categories__list-link" href="#">
-                  Расписание
-                </a>
-              </li>
-              <li className="categories__list-item">
-                <a className="categories__list-link" href="#">
-                  Прогнозы
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="header__right-block">
-            <img className="header__search" src={searchSvg} />
-            <button className="header__login-btn">Войти</button>
-          </div>
-        </header>
+        <Menu visibleMenu={visibleMenu} onVisibleMenu={onVisibleMenu} />
+        <Header onVisibleMenu={onVisibleMenu} />
         <div className="wrapper">
-          <div className="navbar">
-            <div className="navbar-top">
-              <div className="navbar-top__title">Мои лиги</div>
-              <div className="navbar-lists">
-                <div className="nav-list">
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Англия</div>
-                    <img className="nav-list__toggle active" src={toggleSvg} />
-                  </div>
-                  <div className="nav-ligue">
-                    <div className="nav-ligue__list">
-                      <div className="nav-ligue__title">Кубок лиги</div>
-                      <img className="nav-ligue__close" src={closeSvg} />
-                    </div>
-                    <div className="nav-ligue__list">
-                      <div className="nav-ligue__title">Кубок ФА</div>
-                      <img className="nav-ligue__close" src={closeSvg} />
-                    </div>
-                    <div className="nav-ligue__list">
-                      <div className="nav-ligue__title">Премьер-лига</div>
-                      <img className="nav-ligue__close" src={closeSvg} />
-                    </div>
-                    <div className="nav-ligue__list">
-                      <div className="nav-ligue__title">Чемпионшип</div>
-                      <img className="nav-ligue__close" src={closeSvg} />
-                    </div>
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Чемпионшип</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Германия</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Европа</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Испания</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Италия</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">МИР</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Россия</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Украина</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                  <div className="nav-list__item">
-                    <div className="nav-list__title">Франция</div>
-                    <img className="nav-list__toggle" src={toggleSvg} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="navbar-footer">
-              <div className="navbar-footer__title">Страны</div>
-              <div className="navbar-footer-lists">
-                <div className="nav-footer-list">
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Австралия и Океания</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Азия</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Африка</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Европа</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Испания</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Италия</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Англия</div>
-                  </div>
-                  <div className="nav-footer-list__item">
-                    <div className="nav-footer-list__title">Германия</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Navbar visible={visible} league={league} onVisible={onVisible} country={country} />
           <div className="content-wrapper">
-            <div className="content-top">
-              <div className="content-top__lists">
-                <a className="content-top__link active" href="#">
-                  Сегодня <span>10</span>
-                </a>
-                <a className="content-top__link" href="#">
-                  Завтра <span>13</span>
-                </a>
-                <a className="content-top__link" href="#">
-                  Все матчи <span>556</span>
-                </a>
-              </div>
-              <div className="content-top__date">
-                <img className="content-top__date-img" src={dateSvg} />
-                <div className="content-top__date-text">21.03 вт</div>
-              </div>
-            </div>
+            <ContentHeader
+              onSelectItem={onSelectItem}
+              active={active}
+              future={future}
+              today={today}
+              state={state}
+              date={date}
+              day={day}
+            />
             <div className="content">
-              <div className="block">
-                <div className="block-top">
-                  <img className="block-top__flag" src={flagSvg} />
-                  <div className="block-top__title">Англия: Премьер-лига</div>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">00:00</div>
-                  <a className="block-footer__commands" href="#">
-                    Эвертон — Ливерпуль
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-              </div>
-
-              <div className="block">
-                <div className="block-top">
-                  <img className="block-top__flag" src={flagSvg} />
-                  <div className="block-top__title">Англия: Чемпионшип</div>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">23:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Брентфорд — Вест Бромвич
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites selected" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">23:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Дерби Каунтри — Рединг
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">23:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Бристоль Сити — Шеффилд Уэнсдей
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">23:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Барнсли — Миллоул
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">23:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Чарльтон — КПР
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-              </div>
-
-              <div className="block">
-                <div className="block-top">
-                  <img className="block-top__flag" src="" />
-                  <div className="block-top__title">Премьер-лига</div>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">17:00</div>
-                  <a className="block-footer__commands" href="#">
-                    Танзания Призонс — Мбао{' '}
-                  </a>
-                  <a className="block-footer__score" href="#">
-                    0 - 0
-                  </a>
-                  <img className="block-footer__favorites selected" src={starSvg2} />
-                  <div className="block-footer__status">Завершен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-              </div>
-
-              <div className="block">
-                <div className="block-top">
-                  <img className="block-top__flag" src={flagSvg} />
-                  <div className="block-top__title">Оман: Sultan Cup</div>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">16:35</div>
-                  <a className="block-footer__commands" href="#">
-                    Аль-Оруба — Ibri
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">19:45</div>
-                  <a className="block-footer__commands" href="#">
-                    Дхофар — Аль-Нахда
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg} />
-                  <div className="block-footer__status">Перенесен</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-              </div>
-
-              <div className="block">
-                <div className="block-top">
-                  <img className="block-top__flag" src={flagSvg} />
-                  <div className="block-top__title">Туркменистан: Йокары-лига</div>
-                </div>
-                <div className="block-footer">
-                  <div className="block-footer__time">14:00</div>
-                  <a className="block-footer__commands" href="#">
-                    Копетдаг Ашхабад — Балкан
-                  </a>
-                  <a className="block-footer__score" href="#"></a>
-                  <img className="block-footer__favorites" src={starSvg2} />
-                  <div className="block-footer__status">Нет данных</div>
-                  <a className="block-footer__detail" href="#">
-                    Подробнее
-                  </a>
-                </div>
-              </div>
+              <Route exact path="/" render={() => <Today arr={arr} g={g} today={today} />} />
+              <Route
+                exact
+                path="/future"
+                render={() => <Future arr={arr} g={g} future={future} />}
+              />
+              <Route exact path="/all" render={() => <AllMatch arr={arr} state={state} />} />
             </div>
           </div>
         </div>
