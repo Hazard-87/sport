@@ -17,7 +17,7 @@ function App() {
   const league = useSelector((data) => data.leagues)
   const country = useSelector((data) => data.country)
 
-  const [active, setActive] = React.useState(1)
+  const [active, setActive] = React.useState(null)
   const [visible, setVisible] = React.useState(null)
   const [visibleMenu, setVisibleMenu] = React.useState(false)
 
@@ -35,11 +35,12 @@ function App() {
   const today = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0])
   const future = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0] + 1)
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
     dispatch(fetchItems())
   }, [])
 
   const onSelectItem = (item) => {
+    dispatch(fetchItems())
     setActive(item)
   }
 
