@@ -1,67 +1,67 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Route, Link } from 'react-router-dom';
-import { fetchItems } from './redux/actions/index';
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Route } from 'react-router-dom'
+import { fetchItems } from './redux/actions/index'
 
-import Today from './components/matches/Today';
-import Future from './components/matches/Future';
-import AllMatch from './components/matches/AllMatch';
-import Menu from './components/Menu';
-import Header from './components/Header';
-import Navbar from './components/Navbar';
-import ContentHeader from './components/ContentHeader';
+import Today from './components/matches/Today'
+import Future from './components/matches/Future'
+import AllMatch from './components/matches/AllMatch'
+import Menu from './components/Menu'
+import Header from './components/Header'
+import Navbar from './components/Navbar'
+import ContentHeader from './components/ContentHeader'
 
 function App() {
-  const dispatch = useDispatch();
-  const state = useSelector((data) => data.items);
-  const league = useSelector((data) => data.leagues);
-  const country = useSelector((data) => data.country);
+  const dispatch = useDispatch()
+  const state = useSelector((data) => data.items)
+  const league = useSelector((data) => data.leagues)
+  const country = useSelector((data) => data.country)
 
-  const [active, setActive] = React.useState(1);
-  const [visible, setVisible] = React.useState(null);
-  const [visibleMenu, setVisibleMenu] = React.useState(false);
+  const [active, setActive] = React.useState(1)
+  const [visible, setVisible] = React.useState(null)
+  const [visibleMenu, setVisibleMenu] = React.useState(false)
 
-  const arr = [];
-  const items = league.map((item) => item.items);
+  const arr = []
+  const items = league.map((item) => item.items)
   items.forEach(function (item) {
-    arr.push(...item);
-  });
+    arr.push(...item)
+  })
 
-  const date = new Date();
-  const day = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+  const date = new Date()
+  const day = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
 
-  const g = [date.getUTCDate()];
+  const g = [date.getUTCDate()]
 
-  const today = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0]);
-  const future = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0] + 1);
+  const today = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0])
+  const future = state.filter((item) => item.time.split(' ')[0].split('-')[2] == g[0] + 1)
 
   React.useEffect(async () => {
-    dispatch(fetchItems());
-  }, []);
+    dispatch(fetchItems())
+  }, [])
 
   const onSelectItem = (item) => {
-    setActive(item);
-  };
+    setActive(item)
+  }
 
   const onVisible = (index) => {
     if (index === visible) {
-      setVisible(null);
+      setVisible(null)
     } else {
-      setVisible(index);
+      setVisible(index)
     }
-  };
+  }
 
   const onVisibleMenu = () => {
-    setVisibleMenu(!visibleMenu);
-  };
+    setVisibleMenu(!visibleMenu)
+  }
 
   return (
     <div className="app-wrapper">
       <div className="container">
-        <Menu visibleMenu={visibleMenu} onVisibleMenu={onVisibleMenu} />
-        <Header onVisibleMenu={onVisibleMenu} />
+        <Menu visibleMenu={visibleMenu} onVisibleMenu={onVisibleMenu} />{' '}
+        <Header onVisibleMenu={onVisibleMenu} />{' '}
         <div className="wrapper">
-          <Navbar visible={visible} league={league} onVisible={onVisible} country={country} />
+          <Navbar visible={visible} league={league} onVisible={onVisible} country={country} />{' '}
           <div className="content-wrapper">
             <ContentHeader
               onSelectItem={onSelectItem}
@@ -85,7 +85,7 @@ function App() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
